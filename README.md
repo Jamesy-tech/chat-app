@@ -186,11 +186,3 @@ docker-compose down
 docker system prune -f
 docker-compose build --no-cache
 ```
-
-## License
-
-MIT License - feel free to use this for any purpose!
-
----
-
-Made with ❤️ for simple, effective communication.
