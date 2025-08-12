@@ -18,8 +18,8 @@ A lightweight, real-time chat application built with Node.js, Socket.io, and SQL
 
 1. Clone this repository:
 ```bash
-git clone https://github.com/Jamesy-tech/claude_chatting_app
-cd claude_chatting_app
+git clone https://github.com/Jamesy-tech/chatting_app
+cd chatting_app
 ```
 
 2. Make the setup script executable and run it:
@@ -56,7 +56,7 @@ npm start
 ## Project Structure
 
 ```
-simple-chat-app/
+chatting_app/
 ├── public/
 │   ├── index.html      # Main HTML file
 │   ├── style.css       # Styles
