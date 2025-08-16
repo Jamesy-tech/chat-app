@@ -1,16 +1,5 @@
-# Simple Chat App
-
-A lightweight, real-time chat application built with Node.js, Socket.io, and SQLite. Perfect for small teams or personal use.
-
-## Features
-
-- 🔐 Simple username-based authentication
-- 💬 Real-time messaging with Socket.io
-- 👥 Add friends by username
-- 📱 Responsive design
-- 💾 Message history persistence with SQLite
-- 🟢 Online/offline user status
-- 🐳 Docker containerized for easy deployment
+# chat-app
+A simple communication app for any sort of use.
 
 ## Quick Start
 
