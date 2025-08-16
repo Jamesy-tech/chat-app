@@ -8,10 +8,8 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIo(server);
 
-// Database setup
 const db = new sqlite3.Database('chat.db');
 
-// Initialize database tables
 db.serialize(() => {
   db.run(`CREATE TABLE IF NOT EXISTS users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -34,7 +32,6 @@ db.serialize(() => {
 app.use(express.static('public'));
 app.use(express.json());
 
-// API Routes
 app.post('/api/register', (req, res) => {
   const { username } = req.body;
   
@@ -65,7 +62,7 @@ app.get('/api/messages/:user1/:user2', (req, res) => {
   db.all(`SELECT * FROM messages 
           WHERE (sender = ? AND recipient = ?) 
              OR (sender = ? AND recipient = ?) 
-          ORDER BY timestamp ASC`, 
+          ORDER BY timestamp ASC`,
           [user1, user2, user2, user1], (err, rows) => {
     if (err) {
       res.status(500).json({ error: 'Database error' });
@@ -75,7 +72,22 @@ app.get('/api/messages/:user1/:user2', (req, res) => {
   });
 });
 
-// Socket.io connection handling
+app.delete('/api/messages/:messageId', (req, res) => {
+  const { messageId } = req.params;
+  const { username } = req.body;
+  
+  db.run('DELETE FROM messages WHERE message_id = ? AND sender = ?', 
+         [messageId, username], function(err) {
+    if (err) {
+      res.status(500).json({ error: 'Database error' });
+    } else if (this.changes === 0) {
+      res.status(403).json({ error: 'Unauthorized to delete this message' });
+    } else {
+      res.json({ success: true });
+    }
+  });
+});
+
 const activeUsers = new Map();
 
 io.on('connection', (socket) => {
@@ -86,7 +98,6 @@ io.on('connection', (socket) => {
     socket.username = username;
     socket.broadcast.emit('user_online', username);
     
-    // Send list of online users to the newly connected user
     const onlineUsers = Array.from(activeUsers.values());
     socket.emit('online_users', onlineUsers);
   });
@@ -95,7 +106,6 @@ io.on('connection', (socket) => {
     const { recipient, message, messageId } = data;
     const sender = socket.username;
 
-    // Save message to database
     db.run('INSERT INTO messages (sender, recipient, message, message_id) VALUES (?, ?, ?, ?)',
            [sender, recipient, message, messageId], function(err) {
       if (!err) {
@@ -108,7 +118,6 @@ io.on('connection', (socket) => {
           timestamp: new Date().toISOString()
         };
 
-        // Send to recipient if online
         for (let [socketId, username] of activeUsers.entries()) {
           if (username === recipient) {
             io.to(socketId).emit('receive_message', messageData);
@@ -116,8 +125,23 @@ io.on('connection', (socket) => {
           }
         }
 
-        // Send back to sender
         socket.emit('message_sent', messageData);
+      }
+    });
+  });
+
+  socket.on('delete_message', (data) => {
+    const { messageId, recipient } = data;
+    const sender = socket.username;
+
+    db.run('DELETE FROM messages WHERE message_id = ? AND sender = ?', 
+           [messageId, sender], function(err) {
+      if (!err && this.changes > 0) {
+        for (let [socketId, username] of activeUsers.entries()) {
+          if (username === recipient || username === sender) {
+            io.to(socketId).emit('message_deleted', { messageId });
+          }
+        }
       }
     });
   });
