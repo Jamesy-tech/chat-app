@@ -16,7 +16,7 @@
 </head>
 <body>
 
-    <div id="login-screen" class="screen">
+    <div id="login-screen" class="screen hidden">
         <div class="login-container">
            <br>
             <div class="form-group">
@@ -28,11 +28,12 @@
     </div>
 
 
-    <div id="chat-screen" class="screen hidden">
+    <div id="chat-screen" class="screen">
         <div class="chat-container">
             <div class="sidebar">
                 <div class="sidebar-header">
                     <h3 id="current-user"></h3>
+                    <br>
                     <button id="add-friend-btn">
                         <span class="material-symbols-outlined">person_add</span>
                         Add Friend
@@ -48,7 +49,7 @@
 
             <div class="chat-main">
                 <div class="chat-header">
-                    <h3 id="chat-title">Select a friend to start chatting</h3>
+                    <h3 id="chat-title">Chat</h3>
                 </div>
                 <div class="messages-container" id="messages-container">
                 </div>
@@ -69,14 +70,8 @@
             <h3>Add Friend</h3>
             <input type="text" id="friend-username-input" placeholder="Enter friend's username">
             <div class="modal-buttons">
-                <button id="add-friend-confirm">
-                    <span class="material-symbols-outlined" style="font-size: 18px;">check</span>
-                    Add
-                </button>
-                <button id="add-friend-cancel">
-                    <span class="material-symbols-outlined" style="font-size: 18px;">close</span>
-                    Cancel
-                </button>
+                <button id="add-friend-confirm">Add</button>
+                <button id="add-friend-cancel">Cancel</button>
             </div>
             <div id="add-friend-error" class="error-message"></div>
         </div>
