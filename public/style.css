@@ -5,7 +5,7 @@
 }
 
 body {
-    font-family: 'Mulish', sans-serif;
+    font-family: 'Mulish';
 /*   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); */
     background:url("chat_background.png");
     height: 100vh;
@@ -87,7 +87,7 @@ body {
     font-size: 1rem;
     cursor: pointer;
     transition: all 0.3s ease;
-    font-family: 'Raleway', sans-serif;
+    font-family: 'Mulish', sans-serif;
     font-weight: 600;
     display: flex;
     align-items: center;
@@ -136,10 +136,12 @@ body {
 }
 
 #add-friend-btn {
-    background: linear-gradient(135deg, #3498db, #2980b9);
+    background:#3385ff;
+    flex:1;
     color: white;
     border: none;
     padding: 0.75rem 1rem;
+    width:100%;
     border-radius: 8px;
     cursor: pointer;
     font-size: 0.9rem;
@@ -153,8 +155,7 @@ body {
 }
 
 #add-friend-btn:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+    filter:brightness(115%);
 }
 
 .friends-list {
@@ -324,14 +325,14 @@ body {
     padding: 1rem 1.2rem;
     border-radius: 20px;
     word-wrap: break-word;
-    font-family: 'Lato', sans-serif;
+    font-family: 'Mulish';
     line-height: 1.4;
     position: relative;
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
 .message.own .message-bubble {
-    background: linear-gradient(135deg, #667eea, #764ba2);
+    background:#3385ff;
     color: white;
     border-bottom-right-radius: 8px;
 }
@@ -409,7 +410,7 @@ body {
 
 #send-btn {
     padding: 1rem 1.5rem;
-    background: linear-gradient(135deg, #667eea, #764ba2);
+    background: #3385ff;
     color: white;
     border: none;
     border-radius: 25px;
@@ -424,16 +425,15 @@ body {
 }
 
 #send-btn:hover:not(:disabled) {
-    transform: translateY(-1px);
-    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+    filter:brightness(115%)
 }
 
-#send-btn:disabled {
+ #send-btn:disabled {
     background: #bdc3c7;
     cursor: not-allowed;
     transform: none;
     box-shadow: none;
-}
+} 
 
 /* Modal */
 .modal {
@@ -517,8 +517,7 @@ body {
 }
 
 #add-friend-confirm:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 5px 15px rgba(39, 174, 96, 0.3);
+    filter:brightness(115%);
 }
 
 #add-friend-cancel {
@@ -527,8 +526,7 @@ body {
 }
 
 #add-friend-cancel:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3);
+   filter:brightness(115%);
 }
 
 /* Error Messages */
