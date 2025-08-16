@@ -273,7 +273,8 @@ function sendMessage() {
 function displayMessage(messageData) {
     const messageEl = document.createElement('div');
     messageEl.className = `message ${messageData.sender === currentUser ? 'own' : ''}`;
-    messageEl.dataset.messageId = messageData.messageId || `msg_${Date.now()}_${Math.random()}`;
+    const messageId = messageData.message_id || messageData.messageId || `msg_${Date.now()}_${Math.random()}`;
+    messageEl.dataset.messageId = messageId;
     
     const time = new Date(messageData.timestamp).toLocaleTimeString([], {
         hour: '2-digit',
@@ -282,7 +283,7 @@ function displayMessage(messageData) {
 
     const deleteButton = messageData.sender === currentUser ? 
         `<div class="message-actions">
-            <button class="delete-message-btn" onclick="deleteMessage('${messageEl.dataset.messageId}')" title="Delete message">
+            <button class="delete-message-btn" onclick="deleteMessage('${messageId}')" title="Delete message">
                 <span class="material-symbols-outlined" style="font-size: 14px;">delete</span>
             </button>
         </div>` : '';
