@@ -18,12 +18,13 @@ db.serialize(() => {
     username TEXT UNIQUE NOT NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
   )`);
-
+  
   db.run(`CREATE TABLE IF NOT EXISTS messages (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     sender TEXT NOT NULL,
     recipient TEXT NOT NULL,
     message TEXT NOT NULL,
+    message_id TEXT,
     timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY(sender) REFERENCES users(username),
     FOREIGN KEY(recipient) REFERENCES users(username)
@@ -91,18 +92,19 @@ io.on('connection', (socket) => {
   });
 
   socket.on('send_message', (data) => {
-    const { recipient, message } = data;
+    const { recipient, message, messageId } = data;
     const sender = socket.username;
 
     // Save message to database
-    db.run('INSERT INTO messages (sender, recipient, message) VALUES (?, ?, ?)',
-           [sender, recipient, message], function(err) {
+    db.run('INSERT INTO messages (sender, recipient, message, message_id) VALUES (?, ?, ?, ?)',
+           [sender, recipient, message, messageId], function(err) {
       if (!err) {
         const messageData = {
           id: this.lastID,
           sender,
           recipient,
           message,
+          messageId,
           timestamp: new Date().toISOString()
         };
 
