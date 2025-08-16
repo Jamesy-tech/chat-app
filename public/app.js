@@ -1,11 +1,9 @@
-// Global variables
 let socket;
 let currentUser = '';
 let currentChat = '';
 let friends = [];
 let messageIdCounter = 0;
 
-// DOM elements
 const loginScreen = document.getElementById('login-screen');
 const chatScreen = document.getElementById('chat-screen');
 const usernameInput = document.getElementById('username-input');
@@ -28,34 +26,29 @@ const addFriendConfirm = document.getElementById('add-friend-confirm');
 const addFriendCancel = document.getElementById('add-friend-cancel');
 const addFriendError = document.getElementById('add-friend-error');
 
-// Initialize app
 document.addEventListener('DOMContentLoaded', () => {
     setupEventListeners();
     loadUserDataFromStorage();
 });
 
 function setupEventListeners() {
-    // Login events
     loginBtn.addEventListener('click', handleLogin);
     usernameInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') handleLogin();
     });
 
-    // Chat events
     addFriendBtn.addEventListener('click', showAddFriendModal);
     sendBtn.addEventListener('click', sendMessage);
     messageInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') sendMessage();
     });
 
-    // Modal events
     addFriendConfirm.addEventListener('click', addFriend);
     addFriendCancel.addEventListener('click', hideAddFriendModal);
     friendUsernameInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') addFriend();
     });
 
-    // Click outside modal to close
     addFriendModal.addEventListener('click', (e) => {
         if (e.target === addFriendModal) hideAddFriendModal();
     });
@@ -87,7 +80,6 @@ async function handleLogin() {
             currentUser = username;
             initializeChat();
         } else {
-            // User already exists, try to login
             currentUser = username;
             initializeChat();
         }
@@ -101,10 +93,8 @@ function initializeChat() {
     chatScreen.classList.remove('hidden');
     currentUserEl.textContent = currentUser;
 
-    // Save username to localStorage
     saveUserDataToStorage();
 
-    // Initialize socket connection
     socket = io();
     setupSocketListeners();
     socket.emit('user_login', currentUser);
@@ -117,12 +107,21 @@ function setupSocketListeners() {
         if (currentChat === messageData.sender) {
             displayMessage(messageData);
         }
-        // You could add notification logic here for messages from other users
     });
 
     socket.on('message_sent', (messageData) => {
         if (currentChat === messageData.recipient) {
             displayMessage(messageData);
+        }
+    });
+
+    socket.on('message_deleted', (data) => {
+        const messageEl = document.querySelector(`[data-message-id="${data.messageId}"]`);
+        if (messageEl) {
+            messageEl.style.animation = 'fadeOut 0.3s ease';
+            setTimeout(() => {
+                messageEl.remove();
+            }, 300);
         }
     });
 
@@ -191,7 +190,6 @@ function deleteFriend(friendUsername) {
         saveUserDataToStorage();
         renderFriendsList();
         
-        // If currently chatting with this friend, close the chat
         if (currentChat === friendUsername) {
             currentChat = '';
             chatTitle.textContent = 'Select a friend to start chatting';
@@ -238,7 +236,6 @@ async function openChat(friendUsername) {
     messageInput.disabled = false;
     sendBtn.disabled = false;
 
-    // Update active friend
     document.querySelectorAll('.friend-item').forEach(item => {
         item.classList.remove('active');
     });
@@ -247,7 +244,6 @@ async function openChat(friendUsername) {
         activeFriend.classList.add('active');
     }
 
-    // Load chat history
     try {
         const response = await fetch(`/api/messages/${currentUser}/${friendUsername}`);
         const messages = await response.json();
@@ -305,13 +301,10 @@ function displayMessage(messageData) {
 
 function deleteMessage(messageId) {
     if (confirm('Are you sure you want to delete this message?')) {
-        const messageEl = document.querySelector(`[data-message-id="${messageId}"]`);
-        if (messageEl) {
-            messageEl.style.animation = 'fadeOut 0.3s ease';
-            setTimeout(() => {
-                messageEl.remove();
-            }, 300);
-        }
+        socket.emit('delete_message', {
+            messageId: messageId,
+            recipient: currentChat
+        });
     }
 }
 
