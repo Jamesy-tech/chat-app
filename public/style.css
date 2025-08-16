@@ -182,7 +182,7 @@ body {
 }
 
 .friend-item.active {
-    background: #3385ff;
+    background: linear-gradient(135deg, #3498db, #2980b9);
     box-shadow: inset 3px 0 0 #ffffff;
 }
 
