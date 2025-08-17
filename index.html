@@ -23,7 +23,6 @@
             overflow-x: hidden;
         }
 
-        /* Top Navigation */
         .top-nav {
             position: fixed;
             top: 0;
@@ -106,7 +105,6 @@
     color:#3b82f6;
 }
 
-        /* Hero Section */
         .hero {
             min-height: 100vh;
             display: flex;
@@ -263,7 +261,6 @@
             color: white;
         }
 
-        /* Features Section */
         .features {
             padding: 100px 0;
             background: white;
@@ -340,7 +337,6 @@
             line-height: 1.6;
         }
 
-        /* Developer Section */
         .developer {
             padding: 100px 0;
             background: #f8f8f8;
@@ -382,7 +378,6 @@
             transform: translateY(-2px);
         }
 
-        /* README Section */
         .readme {
             background: white;
             padding: 60px;
@@ -409,7 +404,6 @@
             overflow-x: auto;
         }
 
-        /* Footer */
         .footer {
             background: #2c2c2c;
             color: white;
@@ -423,7 +417,6 @@
             padding: 0 30px;
         }
 
-        /* Animations */
         @keyframes blink {
             0%, 50% { opacity: 1; }
             51%, 100% { opacity: 0; }
@@ -445,7 +438,6 @@
             100% { transform: translateX(-10px) translateY(-10px); }
         }
 
-        /* Mobile Responsive */
         @media (max-width: 768px) {
             .nav-menu {
                 display: none;
@@ -526,7 +518,6 @@
         </div>
     </section>
 
-    <!-- Features Section -->
     <section class="features" id="features">
         <div class="container">
             <h2 class="section-title">Features</h2>
@@ -548,7 +539,6 @@
         </div>
     </section>
 
-    <!-- Developer Section -->
     <section class="developer" id="developer">
         <div class="container">
             <h2 class="section-title">Developer</h2>
@@ -603,7 +593,7 @@ chmod +x setup.sh<br>
         </div>
     </section>
 
-    <!-- Footer -->
+
     <footer class="footer">
         <div class="footer-content">
             <h3 style="margin-bottom: 15px;">chat-app</h3>
@@ -620,7 +610,6 @@ chmod +x setup.sh<br>
         window.location.href = fileContent;
     }
 
-        // Smooth scrolling
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
@@ -634,7 +623,6 @@ chmod +x setup.sh<br>
             });
         });
 
-        // Navbar scroll effect
         window.addEventListener('scroll', () => {
             const navbar = document.querySelector('.top-nav');
             if (window.scrollY > 100) {
@@ -646,12 +634,10 @@ chmod +x setup.sh<br>
             }
         });
 
-        // Terminal typing effect enhancement
         const terminalLines = document.querySelectorAll('.terminal-line');
         terminalLines.forEach((line, index) => {
             line.addEventListener('animationend', () => {
                 if (index === terminalLines.length - 1) {
-                    // Last line finished typing
                     const cursor = line.querySelector('.cursor');
                     if (cursor) {
                         cursor.style.animation = 'blink 1s infinite';
